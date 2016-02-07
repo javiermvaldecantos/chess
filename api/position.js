@@ -41,4 +41,4 @@ Position.prototype.toString = function() {
     return this.column + "" + this.row;
 }
 
-module.exports.Position = Position;
+module.exports = Position;

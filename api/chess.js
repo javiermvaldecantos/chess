@@ -1,5 +1,12 @@
-var PIECES = require('./pieces.js');
-var POS = require('./position.js');
+var Position = require('./position.js');
+
+/* import pieces */
+var Rook = require('./pieces/rook.js');
+var Pawn = require('./pieces/pawn.js');
+var Knight = require('./pieces/knight.js');
+var Bishop = require('./pieces/bishop.js');
+var Queen = require('./pieces/queen.js');
+var King = require('./pieces/king.js');
 
 var Board = function() {
     this.squares = {
@@ -12,39 +19,53 @@ var Board = function() {
         'g': {'1': '', '2': '', '3': '', '4': '', '5': '', '6': '', '7': '', '8': ''},
         'h': {'1': '', '2': '', '3': '', '4': '', '5': '', '6': '', '7': '', '8': ''}
     }
+    this.status = '';
     this.kingPosition = {black: null, white: null};
+}
+Board.prototype.getStatus = function() {
+    return this.status;
+}
+Board.prototype.getKingPosition = function() {
+    return this.kingPosition;
 }
 Board.prototype.setup = function() {
     //set up white pieces
-    this.squares['a']['1'] = new PIECES.Rook('white');
-    this.squares['b']['1'] = new PIECES.Knight('white');
-    this.squares['c']['1'] = new PIECES.Bishop('white');
-    this.squares['d']['1'] = new PIECES.Queen('white');
-    this.squares['e']['1'] = new PIECES.King('white');
-    this.squares['f']['1'] = new PIECES.Bishop('white');
-    this.squares['g']['1'] = new PIECES.Knight('white');
-    this.squares['h']['1'] = new PIECES.Rook('white');
+    this.squares['a']['1'] = new Rook('white');
+    this.squares['b']['1'] = new Knight('white');
+    this.squares['c']['1'] = new Bishop('white');
+    this.squares['d']['1'] = new Queen('white');
+    this.squares['e']['1'] = new King('white');
+    this.squares['f']['1'] = new Bishop('white');
+    this.squares['g']['1'] = new Knight('white');
+    this.squares['h']['1'] = new Rook('white');
     for(var column in this.squares) {
-        this.squares[column]['2'] = new PIECES.Pawn('white');
+        this.squares[column]['2'] = new Pawn('white');
     }
     
     //set up black pieces
-    this.squares['a']['8'] = new PIECES.Rook('black');
-    this.squares['b']['8'] = new PIECES.Knight('black');
-    this.squares['c']['8'] = new PIECES.Bishop('black');
-    this.squares['d']['8'] = new PIECES.Queen('black');
-    this.squares['e']['8'] = new PIECES.King('black');
-    this.squares['f']['8'] = new PIECES.Bishop('black');
-    this.squares['g']['8'] = new PIECES.Knight('black');
-    this.squares['h']['8'] = new PIECES.Rook('black');
+    this.squares['a']['8'] = new Rook('black');
+    this.squares['b']['8'] = new Knight('black');
+    this.squares['c']['8'] = new Bishop('black');
+    this.squares['d']['8'] = new Queen('black');
+    this.squares['e']['8'] = new King('black');
+    this.squares['f']['8'] = new Bishop('black');
+    this.squares['g']['8'] = new Knight('black');
+    this.squares['h']['8'] = new Rook('black');
     for(var column in this.squares) {
-        this.squares[column]['7'] = new PIECES.Pawn('black');
+        this.squares[column]['7'] = new Pawn('black');
     }
     
+    this.status = 'setup';
+    
     this.kingPosition = {
-        black: new POS.Position('e',8),
-        white: new POS.Position('e',1)
+        black: new Position('e',8),
+        white: new Position('e',1)
     }
+}
+Board.prototype.getPieceAt = function(position) {
+    var coords = position.getCoordinates();
+    var piece = this.squares[coords.column][coords.row];
+    return piece || '';
 }
 Board.prototype.movePiece = function(origin, destination) {
     var piece = this.squares[origin.getColumn()][origin.getRow()];
@@ -75,14 +96,15 @@ Board.isCheckMate = function() {
 }
 
 Game = function() {
-    this.board = new CHESS.Board();
-    this.status = ''
+    this.board = new Board();
+    this.playerBlack;
+    this.playerWhite;
 }
 Game.prototype.getStatus = function() {
     return this.status;
 }
 
-module.exports = {
+exports = module.exports = {
     Board: Board,
     Game: Game
 }
