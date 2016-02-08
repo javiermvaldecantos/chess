@@ -37,7 +37,7 @@ Board.prototype.getKingPosition = function(set) {
 Board.prototype.toString = function() {
     var s = "\n";
     
-    s += '   __a___|__b___|__c___|__d___|__e___|__f___|__g___|__h___   \n';
+    s += '   ___a___|___b___|___c___|___d___|___e___|___f___|___g___|___h___   \n';
     
     for(var keyRow in this.squares['a']) {
         s += keyRow + ' |'
@@ -46,15 +46,19 @@ Board.prototype.toString = function() {
             var piece = this.getPieceAt(new Position(keyCol, oppositeRow));
             
             if(piece === '') {
-                s += '______|';
+                s += '_______|';
             } else {
+                s += (piece.set === "white") ? '+' : '*';
                 s += normalizeName(piece.name) + '|'
             }
         }
         s += ' ' + keyRow + '\n';
     }
     
-    s += '   __a___|__b___|__c___|__d___|__e___|__f___|__g___|__h___   \n';
+    s += '   ___a___|___b___|___c___|___d___|___e___|___f___|___g___|___h___   \n';
+    s += '\n';
+    s += '   + = white piece   \n';
+    s += '   * = black piece   \n';
     
     return s;
 }
