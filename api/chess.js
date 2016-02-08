@@ -156,7 +156,7 @@ Board.prototype.movePiece = function(origin, destination) {
                     
                     this.moveCount++;
                     if(this.moveCount === 1) this.status = 'started';
-                    if(this.moveCount >= 2) this.status = 'playing';
+                    if(this.moveCount >= 2 && !nextIsCheck.result) this.status = 'playing';
                 }
                 
             } else {
@@ -183,7 +183,7 @@ Board.prototype.movePiece = function(origin, destination) {
                     
                     this.moveCount++;
                     if(this.moveCount === 1) this.status = 'started';
-                    if(this.moveCount >= 2) this.status = 'playing';
+                    if(this.moveCount >= 2 && !nextIsCheck.result) this.status = 'playing';
                 } 
             }
             

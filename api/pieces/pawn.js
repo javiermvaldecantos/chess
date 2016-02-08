@@ -33,7 +33,7 @@ Pawn.prototype.getDestinations = function(origin, board) {
         {dCol: -1, dRow: vector1}
     ];
     
-    if(board.getStatus() === 'setup') {
+    if(board.getStatus() === 'setup' || board.getStatus() === 'started') {
         var vector2 = vector1 * 2;
         displacements.push({dCol:0, dRow:vector2});
     };
