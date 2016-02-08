@@ -37,8 +37,10 @@ Board.prototype.getKingPosition = function(set) {
 Board.prototype.toString = function() {
     var s = "\n";
     
+    s += '   __a___|__b___|__c___|__d___|__e___|__f___|__g___|__h___   \n';
+    
     for(var keyRow in this.squares['a']) {
-        s += '|'
+        s += keyRow + ' |'
         for(var keyCol in this.squares) {
             var oppositeRow = 9 - keyRow;
             var piece = this.getPieceAt(new Position(keyCol, oppositeRow));
@@ -49,8 +51,10 @@ Board.prototype.toString = function() {
                 s += normalizeName(piece.name) + '|'
             }
         }
-        s += '\n';
+        s += ' ' + keyRow + '\n';
     }
+    
+    s += '   __a___|__b___|__c___|__d___|__e___|__f___|__g___|__h___   \n';
     
     return s;
 }

@@ -43,7 +43,44 @@ app.get('*',function(request,response) {
                 ALL_GAMES['' + newGameID] = theGame;
                 response.send(gameSetup);
                 break;
+            
+            case "movepiece":   // equivalent to 'POST' /movepiece, but with the parameters inside the URI
                 
+                if(requestQuery) {
+                    var gameID = requestQuery.id;
+                    if(gameID) {
+                        
+                        var selectedGame = ALL_GAMES[gameID];
+                        
+                        if(!selectedGame) {
+                            response.writeHead(400, {"Content-Type": "text/plain"});
+                            response.write('404 NOT FOUND - There is no game with ID='+gameID);
+                            response.end();
+                        } else {
+                            
+                            var player = requestQuery.player;
+                            var oCol = requestQuery.oCol;
+                            var oRow = requestQuery.oRow;
+                            var dCol = requestQuery.dCol;
+                            var dRow = requestQuery.dRow;
+                            
+                            var moveResult = selectedGame.move(player, oCol, oRow, dCol, dRow);
+                            
+                            response.send(moveResult);
+                        }
+                        
+                    } else {
+                        response.writeHead(400, {"Content-Type": "text/plain"});
+                        response.write('400 BAD REQUEST - No game ID was specified');
+                        response.end();
+                    }
+                } else {
+                    response.writeHead(400, {"Content-Type": "text/plain"});
+                    response.write('400 BAD REQUEST - No game ID was specified');
+                    response.end();
+                }
+                break;
+            
             case "gamestate":
                 
                 if(requestQuery) {
@@ -88,7 +125,9 @@ app.get('*',function(request,response) {
                             var gameState = selectedGame.getGameState();
                             var boardSketch = gameState.boardAsString;
                             
-                            response.send({success:true, data:boardSketch});
+                            response.writeHead(200, {"Content-Type": "text/plain"});
+                            response.write(boardSketch);
+                            response.end();
                         }
                         
                     } else {
