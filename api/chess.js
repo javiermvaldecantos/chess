@@ -20,6 +20,7 @@ var Board = function() {
         'h': {'1': '', '2': '', '3': '', '4': '', '5': '', '6': '', '7': '', '8': ''}
     }
     this.status = '';
+    this.check = '';
     this.kingPosition = {black: null, white: null};
     this.moveCount = 0;
 }
@@ -112,6 +113,7 @@ Board.prototype.movePiece = function(origin, destination) {
         return { success: false, message: 'There was no piece in this position'};
     } else {
         var result = oPiece.canMoveTo(origin, destination, this);
+        result.isCapture = false;
         if(result.success) {
             //we move the piece
             var dPiece = this.getPieceAt(destination);
@@ -134,17 +136,36 @@ Board.prototype.movePiece = function(origin, destination) {
                     this.kingPosition[oPiece.set] = origin;
                     
                 } else {
+                    result.isCapture = dPiece !== '';   //the piece in origin has captured the piece in the destination
                     this.moveCount++;
+                    if(this.moveCount >= 2) this.status = 'playing';
                 }
                 
             } else {
-                result.isCapture = dPiece !== '';   //the piece has captured the piece in the destination
+                result.isCapture = dPiece !== '';   //the piece in origin has captured the piece in the destination
                 this.squares[destination.getColumn()][destination.getRow()] = oPiece;
                 this.squares[origin.getColumn()][origin.getRow()] = '';
-                this.moveCount++;
+                
+                var nowIsCheck = this.isCheck(oPiece.set);
+                if(nowIsCheck.result) {
+                    //we have moved and we're in check. The movement is invalid
+                    result.success = false;
+                    result.message = "Invalid movement: the " + oPiece.set + " king would be in check";
+                    this.squares[destination.getColumn()][destination.getRow()] = dPiece;
+                    this.squares[origin.getColumn()][origin.getRow()] = oPiece;
+                } else {
+                    var complementarySet = (oPiece.set === 'white') ? 'black' : 'white';
+                    var nextIsCheck = this.isCheck(complementarySet);
+
+                    if(nextIsCheck.result) {
+                        this.check = complementarySet;
+                        this.status = complementarySet + ' check'
+                    }
+                    
+                    this.moveCount++;
+                    if(this.moveCount >= 2) this.status = 'playing';
+                } 
             }
-            
-            if(this.moveCount >= 2) this.status = 'playing';
             
             return result;
             
@@ -246,10 +267,8 @@ Board.prototype.isKnightThreat = function(kingPosition, kingSet) {
 }
 
 Board.prototype.isBishopThreat = function(kingPosition, kingSet) {
-//    console.log('king position:',kingPosition.toString());
     var tempBishop = new Bishop(kingSet);
     var destinations = tempBishop.getDestinations(kingPosition, this);
-//    console.log(destinations)
     for(var dest in destinations) {
         var col = dest[0];
         var row = dest[1];
@@ -359,19 +378,7 @@ Board.prototype.setupCheck = function(testCase) {
 }
 
 Board.prototype.isCheckMate = function() {
-    
+    //to develop
 }
 
-Game = function() {
-    this.board = new Board();
-    this.playerBlack;
-    this.playerWhite;
-}
-Game.prototype.getStatus = function() {
-    return this.status;
-}
-
-exports = module.exports = {
-    Board: Board,
-    Game: Game
-}
+exports = module.exports = Board;

@@ -1,12 +1,12 @@
 var Position = require('../position.js');
-var CHESS = require('../chess.js');
+var Board = require('../chess.js');
 
 function equals(obj1, obj2) {
     return JSON.stringify(obj1) === JSON.stringify(obj2);
 }
 
 (function testMovePiece() {
-    var myBoard = new CHESS.Board();
+    var myBoard = new Board();
     myBoard.setup();
     
     console.log(myBoard.toString());
@@ -41,7 +41,7 @@ function equals(obj1, obj2) {
 })();
 
 //(function testCheck() {
-//    var myBoard = new CHESS.Board();
+//    var myBoard = new Board();
 //    myBoard.setup();
 //    logCheck(myBoard,'white');
 //    logCheck(myBoard,'black');
@@ -84,7 +84,7 @@ function logCheck(board,set) {
 }
 
 //(function testCheck() {
-//    var myBoard = new CHESS.Board();
+//    var myBoard = new Board();
 //    myBoard.setup();
 //    
 //    myBoard.isCheck();
