@@ -129,7 +129,7 @@ function equals(obj1, obj2) {
     console.log('pawn1.canMoveTo(new Position(\'b\',2),new Position(\'b\',3),myBoard)');
     console.log(pawn1.canMoveTo(new Position('b',2),new Position('b',3),myBoard));
     console.log('pawn1.canMoveTo(new Position(\'b\',2),new Position(\'b\',4),myBoard)');
-    console.log(pawn1.canMoveTo(new Position('b',2),new Position('b',3),myBoard));
+    console.log(pawn1.canMoveTo(new Position('b',2),new Position('b',4),myBoard));
     console.log('pawn1.canMoveTo(new Position(\'b\',2),new Position(\'f\',3),myBoard)');
     console.log(pawn1.canMoveTo(new Position('b',2),new Position('f',3),myBoard));
     

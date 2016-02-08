@@ -11,22 +11,32 @@ Pawn.prototype.constructor = Pawn;
 Pawn.prototype.canMoveTo = function(origin, destination, board) {
     var destinations = this.getDestinations(origin, board);
     if(destinations[destination.toString()]) {
-        return {success: true, message: 'Valid movement'};
+        return {
+            success: true,
+            message: 'Valid movement: ' + this.set + ' ' + this.name + ' from ' + origin.toString() + ' to ' + destination.toString()
+        };
     } else {
-        return {success: false, message: 'Invalid movement'};
+        return {
+            success: false,
+            message: 'Invalid movement: ' + this.set + ' ' + this.name + ' from ' + origin.toString() + ' to ' + destination.toString()
+        };
     }
 }
 Pawn.prototype.getDestinations = function(origin, board) {
     var coords = origin.getIntCoordinates();
     var destinations = {};
     
+    var vector1 = (this.set === 'white') ? 1 : -1 ;
     var displacements = [
-        {dCol: 0, dRow: 1},
-        {dCol: 1, dRow: 1},
-        {dCol: -1, dRow: 1}
+        {dCol: 0, dRow: vector1},
+        {dCol: 1, dRow: vector1},
+        {dCol: -1, dRow: vector1}
     ];
     
-    if(board.getStatus() === 'setup') displacements.push({dCol:0, dRow:2});
+    if(board.getStatus() === 'setup') {
+        var vector2 = vector1 * 2;
+        displacements.push({dCol:0, dRow:vector2});
+    };
     
     for(var d = 0, dLen = displacements.length; d < dLen; d++) {
         var disp = displacements[d];

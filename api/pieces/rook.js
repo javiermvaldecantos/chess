@@ -11,9 +11,15 @@ Rook.prototype.constructor = Rook;
 Rook.prototype.canMoveTo = function(origin, destination, board) {
     var destinations = this.getDestinations(origin, board);
     if(destinations[destination.toString()]) {
-        return {success: true, message: 'Valid movement'};
+        return {
+            success: true,
+            message: 'Valid movement: ' + this.set + ' ' + this.name + ' from ' + origin.toString() + ' to ' + destination.toString()
+        };
     } else {
-        return {success: false, message: 'Invalid movement'};
+        return {
+            success: false,
+            message: 'Invalid movement: ' + this.set + ' ' + this.name + ' from ' + origin.toString() + ' to ' + destination.toString()
+        };
     }
 }
 Rook.prototype.getDestinations = function(origin, board) {
