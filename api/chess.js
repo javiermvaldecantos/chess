@@ -40,7 +40,7 @@ Board.prototype.toString = function() {
     s += '   ___a___|___b___|___c___|___d___|___e___|___f___|___g___|___h___   \n';
     
     for(var keyRow in this.squares['a']) {
-        s += keyRow + ' |'
+        s += (9 - keyRow) + ' |'
         for(var keyCol in this.squares) {
             var oppositeRow = 9 - keyRow;
             var piece = this.getPieceAt(new Position(keyCol, oppositeRow));
@@ -52,7 +52,7 @@ Board.prototype.toString = function() {
                 s += normalizeName(piece.name) + '|'
             }
         }
-        s += ' ' + keyRow + '\n';
+        s += ' ' + (9 - keyRow) + '\n';
     }
     
     s += '   ___a___|___b___|___c___|___d___|___e___|___f___|___g___|___h___   \n';
@@ -145,7 +145,17 @@ Board.prototype.movePiece = function(origin, destination) {
                     
                 } else {
                     result.isCapture = dPiece !== '';   //the piece in origin has captured the piece in the destination
+                    
+                    var complementarySet = (oPiece.set === 'white') ? 'black' : 'white';
+                    var nextIsCheck = this.isCheck(complementarySet);
+
+                    if(nextIsCheck.result) {
+                        this.check = complementarySet;
+                        this.status = complementarySet + ' check'
+                    }
+                    
                     this.moveCount++;
+                    if(this.moveCount === 1) this.status = 'started';
                     if(this.moveCount >= 2) this.status = 'playing';
                 }
                 
@@ -161,6 +171,7 @@ Board.prototype.movePiece = function(origin, destination) {
                     result.message = "Invalid movement: the " + oPiece.set + " king would be in check";
                     this.squares[destination.getColumn()][destination.getRow()] = dPiece;
                     this.squares[origin.getColumn()][origin.getRow()] = oPiece;
+                    result.isCapture = false;
                 } else {
                     var complementarySet = (oPiece.set === 'white') ? 'black' : 'white';
                     var nextIsCheck = this.isCheck(complementarySet);
@@ -171,6 +182,7 @@ Board.prototype.movePiece = function(origin, destination) {
                     }
                     
                     this.moveCount++;
+                    if(this.moveCount === 1) this.status = 'started';
                     if(this.moveCount >= 2) this.status = 'playing';
                 } 
             }
