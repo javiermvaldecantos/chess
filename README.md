@@ -16,7 +16,6 @@ This project provides a web service capable of facilitating a chess game
     6. [http://chess-jmorenov.rhcloud.com/api/movepiece?id=XXXX&player=white&oCol=b&oRow=2&dCol=b&dRow=3](http://chess-jmorenov.rhcloud.com/api/movepiece?id=XXXX&oCol=b&oRow=2&dCol=b&dRow=3)
     7. [http://chess-jmorenov.rhcloud.com/api/movepiece?id=XXXX](http://chess-jmorenov.rhcloud.com/api/movepiece?id=XXXX)
 -->
-
 There's a total of 6 APIs:
  1. __startgame:__ GET /api/startgame
     Sets up the game and returns a message informing whether the setup was successful or not. It also returns the game ID wich will be used to call the rest of APIs.
