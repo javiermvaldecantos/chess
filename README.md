@@ -17,22 +17,22 @@ This project provides a web service capable of facilitating a chess game
     7. [http://chess-jmorenov.rhcloud.com/api/movepiece?id=XXXX](http://chess-jmorenov.rhcloud.com/api/movepiece?id=XXXX)
 -->
 There's a total of 6 APIs:
- 1. __startgame:__ GET /api/startgame
+ 1. __startgame:__ GET /api/startgame<br>
     Sets up the game and returns a message informing whether the setup was successful or not. It also returns the game ID wich will be used to call the rest of APIs.
 
- 2. __gamestate:__ GET /api/gamestate?id=XXXX
+ 2. __gamestate:__ GET /api/gamestate?id=XXXX<br>
     Returns the game state as a JSON object with different parameters (number of pieces on the board, number of moves, the board as a JSON object, etc.)
 
- 3. __boardsketch:__ GET /api/boardsketch?id=XXXX
+ 3. __boardsketch:__ GET /api/boardsketch?id=XXXX<br>
     Returns a sketch of the board in plain text, so that the developer can quickly see what's the state of the game.
 
- 4. __resetgame:__ GET /api/resetgame?id=XXXX
+ 4. __resetgame:__ GET /api/resetgame?id=XXXX<br>
     Resets the game with ID=XXXX. This means the game will go back to "setup" status, and the players will be able to start playing again.
 
- 5. __stopgame:__ GET /api/stopgame?id=XXXX
+ 5. __stopgame:__ GET /api/stopgame?id=XXXX<br>
     Stops the game with ID=XXXX. This means that the game with ID=XXXX will be deleted from the server's database and will no longer exist.
 
- 6. __movepiece:__ GET /api/movepiece?id=XXXX&player=white&oCol=b&oRow=2&dCol=b&dRow=3
+ 6. __movepiece:__ GET /api/movepiece?id=XXXX&player=white&oCol=b&oRow=2&dCol=b&dRow=3<br>
     Tries to move a piece of the set given by the "player" parameter (i.e. 'black' or 'white') from the position (oCol,oRow) to the position (dCol, dRow). Will return a JSON object confirming if the movement was successful or not, if there's a check after the movement and if the piece that was moved captured another piece. The layout of the board is the following ([a-h] columns, [1-8] rows):
     ```
        ___a___|___b___|___c___|___d___|___e___|___f___|___g___|___h___   
@@ -49,7 +49,7 @@ There's a total of 6 APIs:
        + = white piece   
        * = black piece   
     ```
- 7. __movepiece:__ POST /api/movepiece?id=XXXX
+ 7. __movepiece:__ POST /api/movepiece?id=XXXX<br>
     This API is equivalent to API number 6, but it is a POST request. The body of the request must be:
     
     ```javascript
